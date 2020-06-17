@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>TicTacToe</title>
+  <style>
+    .cell{
+      width: 100px;
+      height: 100px;
+      background-color: green;
+      display: inline-block;
+      border: 1px solid #fff;
+      vertical-align: middle;
+      line-height: 100px;
+      font-size: 50px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <ul id="app">
+
+  </ul>
+</body>
+<script>
+  /**
+   * 一维数组
+   * 二维数组
+   * Map 
+   */
+  const pattern = [
+    [ 2, 0, 0],
+    [ 0, 1, 0],
+    [ 0, 0, 0]
+  ];
+
+  let color = 1;
+
+  function show(pattern) {
+    const app = document.querySelector("#app");
+    app.innerHTML = "";
+    for (let i = 0; i< pattern.length;i++) {
+      for (let j = 0; j < pattern[i].length;j++) {
+        let element = document.createElement("li");
+        element.className = "cell";
+
+        element.innerText = pattern[i][j] === 2 ? "X" :
+          pattern[i][j] === 1 ? "O" : "";
+
+        element.addEventListener("click", () => move(i, j));
+        app.appendChild(element);
+      }
+      app.appendChild(document.createElement("br"));
+    }
+  }
+
+  function move(i, j) {
+    pattern[i][j] = color;
+    show(pattern);
+    if (check()) {
+      alert(color == 2 ? "X is winner" : "O is winner");
+    }
+    color = 3 - color;
+  }
+
+  function check() {
+    for (let i = 0; i < 3; i++) {
+      let win = true;
+      for (let j =0; j < 3; j++) {
+        if (pattern[i][j] !== color) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win)
+          return true;
+    }
+
+    for (let i = 0; i < 3; i++) {
+      let win = true;
+      for (let j =0; j < 3; j++) {
+        if (pattern[j][i] !== color) {
+          win = false;
+          break;
+        }
+      }
+      if (win)
+          return true;
+    }
+
+    {
+      let win = true;
+      for (let j = 0; j < 3; j++) {
+        if (pattern[j][j] !== color) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win)
+          return true;
+    }
+
+    {
+      let win = true;
+      for (let j = 0; j < 3; j++) {
+        if (pattern[j][2-j] !== color) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win)
+          return true;
+    }
+
+    return false;
+  }
+
+  show(pattern);
+
+</script>
+</html>
